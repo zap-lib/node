@@ -1,0 +1,31 @@
+{
+  "name": "zap-lib",
+  "version": "1.0.0",
+  "description": "A cross-platform library for multi-device applications",
+  "main": "build/index.js",
+  "engines": {
+    "node": ">=16.8"
+  },
+  "scripts": {
+    "build": "esbuild index.ts --outfile=build/index.js --platform=node --target=es2020 --bundle --minify --sourcemap",
+    "lint": "eslint --ignore-path=.gitignore --ext=.ts .",
+    "lint:type": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zap-lib/nodejs.git"
+  },
+  "author": "parksb <parkgds@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zap-lib/nodejs/issues"
+  },
+  "homepage": "https://github.com/zap-lib/nodejs#readme",
+  "devDependencies": {
+    "@types/node": "^20.8.6",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "esbuild": "^0.19.4",
+    "eslint": "^8.51.0",
+    "typescript": "^5.2.2"
+  }
+}
