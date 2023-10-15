@@ -1,40 +1,38 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
-import path from 'node:path';
-import ZapServer from './zap_server';
+import { app, BrowserWindow, ipcMain } from "electron";
+import { ZapServer } from "zap-lib";
 
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
       contextIsolation: false,
     },
   });
 
-  win.loadFile('index.html');
+  win.loadFile("index.html");
 }
 
 app.whenReady().then(() => {
   createWindow();
 
-  app.on('activate', () => {
+  app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
   });
 });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
 });
 
-ipcMain.on('start', () => {
+ipcMain.on("zap-start", (e) => {
   const zap = new class extends ZapServer {
-    onAccelerometerChanged(id: string, value: string) {
-      console.log(id, value);
+    onAccelerometerChanged(_: string, value: string) {
+      e.sender.send("zap-acc-data", value);
     }
   };
 
