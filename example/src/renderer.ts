@@ -25,7 +25,8 @@ import { ipcRenderer } from "electron";
 
   ipcRenderer.send("zap-start");
   ipcRenderer.on("zap-acc-data", (_, data) => {
-    target.x += Number(data);
+    target.x += -Number(data.x);
+    target.y += Number(data.y);
     draw();
   });
 

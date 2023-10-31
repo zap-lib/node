@@ -16,9 +16,11 @@ class ZapServer {
     this.socket.on("message", (msg) => {
       const res: ZapData = JSON.parse(msg.toString());
       switch (res.t) {
-        case ZapResource.ACCELEROMETER:
-          this.onAccelerometerChanged(this.id, res.v);
+        case ZapResource.ACCELEROMETER: {
+          const [x, y] = res.v.split(",");
+          if (x && y) this.onAccelerometerChanged(this.id, x, y);
           break;
+        }
         default:
           throw new Error(`Unknown resource type: ${res.t}`);
       }
@@ -33,7 +35,7 @@ class ZapServer {
     this.socket.close();
   }
 
-  onAccelerometerChanged(_id: string, _value: string) {
+  onAccelerometerChanged(_id: string, _x: string, _y: string) {
     throw new Error("Not yet implemented");
   }
 
