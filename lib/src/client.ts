@@ -1,9 +1,11 @@
 import * as dgram from "node:dgram";
 
 class ZapClient {
+  private serverAddress: string;
   private socket: dgram.Socket;
 
-  constructor() {
+  constructor(serverAddress: string) {
+    this.serverAddress = serverAddress;
     this.socket = dgram.createSocket("udp4");
 
     this.socket.on("error", () => {
@@ -12,14 +14,13 @@ class ZapClient {
   }
 
   send(value: string) {
-    this.socket.send(value, 0, value.length, this.PORT, this.IP);
+    this.socket.send(value, 0, value.length, this.PORT, this.serverAddress);
   }
 
   stop() {
     this.socket.close();
   }
 
-  private IP = "192.168.0.27";
   private PORT = 65500;
 }
 
