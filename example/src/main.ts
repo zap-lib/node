@@ -31,7 +31,7 @@ app.on("window-all-closed", () => {
 
 ipcMain.on("zap-start", (e) => {
   const zap = new class extends ZapServer {
-    onAccelerometerChanged(_: string, x: string, y: string) {
+    onAccelerometerChanged(_: string, x: number, y: number) {
       e.sender.send("zap-acc-data", { x, y });
     }
   };

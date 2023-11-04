@@ -1,6 +1,6 @@
 import * as dgram from "node:dgram";
 
-import { ZapData, ZapResource } from "./models";
+import { ZapAccelerometerData, toZapData } from "./models";
 
 class ZapServer {
   private socket: dgram.Socket;
@@ -14,15 +14,15 @@ class ZapServer {
     });
 
     this.socket.on("message", (msg) => {
-      const res: ZapData = JSON.parse(msg.toString());
-      switch (res.t) {
-        case ZapResource.ACCELEROMETER: {
-          const [x, y] = res.v.split(",");
-          if (x && y) this.onAccelerometerChanged(this.id, x, y);
+      const data = toZapData(msg.toString());
+      switch (data.constructor) {
+        case ZapAccelerometerData: {
+          const acc = <ZapAccelerometerData>data;
+          this.onAccelerometerChanged(this.id, acc.x, acc.y);
           break;
         }
         default:
-          throw new Error(`Unknown resource type: ${res.t}`);
+          throw new Error("Unknown resource type");
       }
     });
   }
@@ -35,7 +35,7 @@ class ZapServer {
     this.socket.close();
   }
 
-  onAccelerometerChanged(_id: string, _x: string, _y: string) {
+  onAccelerometerChanged(_id: string, _x: number, _y: number) {
     throw new Error("Not yet implemented");
   }
 

@@ -1,5 +1,7 @@
 import * as dgram from "node:dgram";
 
+import { ZapData, toZapString } from "./models";
+
 class ZapClient {
   private serverAddress: string;
   private socket: dgram.Socket;
@@ -13,8 +15,9 @@ class ZapClient {
     });
   }
 
-  send(value: string) {
-    this.socket.send(value, 0, value.length, this.PORT, this.serverAddress);
+  send(data: ZapData) {
+    const zapString = toZapString(data);
+    this.socket.send(zapString, 0, zapString.length, this.PORT, this.serverAddress);
   }
 
   stop() {
