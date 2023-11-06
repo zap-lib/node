@@ -2,6 +2,11 @@ import * as dgram from "node:dgram";
 
 import { ZapAccelerometerData, ZapData, ZapResource, ZapString } from "./models";
 
+interface ZapDataFromClient {
+  uuid: string;
+  data: ZapData;
+}
+
 class ZapServer {
   private socket: dgram.Socket;
 
@@ -13,11 +18,11 @@ class ZapServer {
     });
 
     this.socket.on("message", (msg) => {
-      const data = this.toZapData(msg.toString());
-      switch (data.constructor) {
+      const received = this.toZapData(msg.toString());
+      switch (received.data.constructor) {
         case ZapAccelerometerData: {
-          const acc = <ZapAccelerometerData>data;
-          this.onAccelerometerChanged(acc.uuid, acc.x, acc.y);
+          const accData = <ZapAccelerometerData>received.data;
+          this.onAccelerometerChanged(received.uuid, accData.x, accData.y);
           break;
         }
         default:
@@ -38,13 +43,15 @@ class ZapServer {
     throw new Error("Not yet implemented");
   }
 
-  private toZapData(str: ZapString): ZapData {
+  private toZapData(str: ZapString): ZapDataFromClient {
     const [uuid, resource, value] = str.split(";");
     if (uuid && resource && value) {
       switch (resource) {
         case ZapResource.ACCELEROMETER: {
           const [x, y] = value.split(",").map((k) => Number(k));
-          if (x !== undefined && y !== undefined) return new ZapAccelerometerData(uuid, x, y);
+          if (x !== undefined && y !== undefined) {
+            return { uuid, data: new ZapAccelerometerData(x, y) };
+          }
           throw new Error(`Invalid ZapString for ${ZapResource.ACCELEROMETER}`);
         }
       }

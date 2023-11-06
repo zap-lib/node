@@ -179,5 +179,6 @@ dist
 build/
 docs/
 src/
-tsconfig.json
 .eslintrc
+tsconfig.json
+package-lock.json
