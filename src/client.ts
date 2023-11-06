@@ -1,8 +1,11 @@
 import * as dgram from "node:dgram";
+import { v4 as uuidv4 } from "uuid";
 
-import { ZapData, toZapString } from "./models";
+import { ZapAccelerometerData, ZapData, ZapResource, ZapString } from "./models";
 
 class ZapClient {
+  uuid = uuidv4();
+
   private serverAddress: string;
   private socket: dgram.Socket;
 
@@ -16,12 +19,26 @@ class ZapClient {
   }
 
   send(data: ZapData) {
-    const zapString = toZapString(data);
+    const zapString = this.toZapString(data);
     this.socket.send(zapString, 0, zapString.length, this.PORT, this.serverAddress);
   }
 
   stop() {
     this.socket.close();
+  }
+
+  private toZapString(data: ZapData): ZapString {
+    const dataPart = () => {
+      switch (data.constructor) {
+        case ZapAccelerometerData: {
+          const acc = <ZapAccelerometerData>data;
+          return `${ZapResource.ACCELEROMETER};${acc.x},${acc.y}`;
+        }
+        default: throw new Error("Unknown Zap resource");
+      }
+    };
+
+    return `${this.uuid};${dataPart()}`;
   }
 
   private PORT = 65500;
