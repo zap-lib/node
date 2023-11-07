@@ -1,5 +1,6 @@
-import ZapServer from "./server";
-import ZapClient from "./client";
+import ZapServer from "./ZapServer";
+import ZapClient from "./ZapClient";
+export { ZapServer, ZapClient };
 
 export * from "./models";
-export { ZapServer, ZapClient };
+export * from "./resources";

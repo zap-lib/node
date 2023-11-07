@@ -7,7 +7,7 @@
     "node": ">=16.8"
   },
   "scripts": {
-    "build": "rm build/* && esbuild src/index.ts --outfile=build/index.js --platform=node --target=es2020 --bundle --minify --sourcemap && tsc --emitDeclarationOnly --outDir build",
+    "build": "rm -r build/* && esbuild src/index.ts --outfile=build/index.js --platform=node --target=es2020 --bundle --minify --sourcemap && tsc --emitDeclarationOnly --outDir build",
     "lint": "eslint --ignore-path=.gitignore --ext=.ts .",
     "lint:type": "tsc --noEmit",
     "doc": "typedoc src/index.ts"
