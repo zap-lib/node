@@ -1,4 +1,4 @@
-import { ZapResource, toZapResource } from "../resources";
+import { ZapResource, ZapResourceString } from "../resources";
 
 export class ZapHeader {
   id: string;
@@ -39,7 +39,7 @@ export class ZapDatagram {
     if (resource == undefined) throw Error("Missing resource");
 
     return new ZapDatagram(
-      new ZapHeader(id, toZapResource(resource)),
+      new ZapHeader(id, ZapResource[resource as ZapResourceString]),
       payload,
     );
   }

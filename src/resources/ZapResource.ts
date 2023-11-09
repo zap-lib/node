@@ -1,12 +1,6 @@
 export enum ZapResource {
-  ACCELEROMETER = "ACC"
+  ACCELEROMETER = "ACC",
+  UI_COMPONENT = "UIC",
 }
 
-export function toZapResource(str: string): ZapResource {
-  switch (str) {
-    case ZapResource.ACCELEROMETER:
-      return ZapResource.ACCELEROMETER;
-    default:
-      throw new Error("Unknown resource");
-  }
-}
+export type ZapResourceString = keyof typeof ZapResource;

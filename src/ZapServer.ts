@@ -1,7 +1,7 @@
 import * as dgram from "node:dgram";
 
 import { ZapDatagram } from "./models";
-import { ZapAccelerometer, ZapResource } from "./resources";
+import { ZapAccelerometer, ZapUiComponent, ZapResource, ZapUiComponentEvent } from "./resources";
 
 class ZapServer {
   private DEFAULT_PORT = 65500;
@@ -25,6 +25,11 @@ class ZapServer {
           this.onAccelerometerChanged(header.id, x, y, z);
           break;
         }
+        case ZapResource.UI_COMPONENT: {
+          const { code, event, value } = ZapUiComponent.fromPayload(payload);
+          this.onUiComponentChanged(header.id, code, event, value);
+          break;
+        }
         default:
           throw new Error("Unknown resource type");
       }
@@ -41,6 +46,15 @@ class ZapServer {
   }
 
   onAccelerometerChanged(_id: string, _x: number, _y: number, _z: number) {
+    throw new Error("Not yet implemented");
+  }
+
+  onUiComponentChanged(
+    _id: string,
+    _code: string,
+    _event: ZapUiComponentEvent,
+    _value?: string,
+  ) {
     throw new Error("Not yet implemented");
   }
 }
