@@ -24,10 +24,10 @@
   "homepage": "https://github.com/zap-lib/node#readme",
   "devDependencies": {
     "@types/node": "^20.8.6",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@types/uuid": "^9.0.6",
     "esbuild": "^0.19.4",
-    "eslint": "^8.51.0",
+    "eslint": "^8.53.0",
     "typedoc": "^0.25.3",
     "typescript": "^5.2.2"
   },
