@@ -13,7 +13,7 @@ export class ZapText implements Zapable {
   }
 
   toPayload(): ZapPayload {
-    return `${this.str},${this.charset}`;
+    return `${encodeURIComponent(this.str)},${this.charset}`;
   }
 
   static fromPayload(payload: ZapPayload): ZapText {
@@ -22,6 +22,6 @@ export class ZapText implements Zapable {
       throw Error("Invalid payload");
     }
 
-    return new ZapText(str, toCharset(charset));
+    return new ZapText(decodeURIComponent(str), toCharset(charset));
   }
 }
