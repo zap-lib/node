@@ -3,4 +3,13 @@ export enum ZapResource {
   UI_COMPONENT = "UIC",
 }
 
-export type ZapResourceString = keyof typeof ZapResource;
+export function toZapResource(str: string): ZapResource {
+  switch (str) {
+    case ZapResource.ACCELEROMETER:
+      return ZapResource.ACCELEROMETER;
+    case ZapResource.UI_COMPONENT:
+      return ZapResource.UI_COMPONENT;
+    default:
+      throw new Error("Unknown resource");
+  }
+}
