@@ -1,5 +1,5 @@
 {
-  "name": "zap-lib",
+  "name": "zap-lib-js",
   "version": "0.1.0",
   "description": "A cross-platform library for multi-device applications",
   "main": "build/index.js",
