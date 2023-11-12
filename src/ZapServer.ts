@@ -3,6 +3,9 @@ import * as dgram from "node:dgram";
 import { Charset, ZapDatagram } from "./models";
 import { ZapAccelerometer, ZapUiEvent, ZapResource, ZapUiEventType, ZapText } from "./resources";
 
+/**
+ * A server receives data from client.
+ */
 class ZapServer {
   private DEFAULT_PORT = 65500;
 
@@ -41,19 +44,33 @@ class ZapServer {
     });
   }
 
+  /**
+   * Start listening the transmitted data from clients on the given port.
+   *
+   * @param port - A port number for receiving data (default: 65500).
+   */
   listen(port: number = this.DEFAULT_PORT) {
     this.port = port;
     this.socket.bind(this.port);
   }
 
+  /**
+   * Stop listening to clients.
+   */
   stop() {
     this.socket.close();
   }
 
+  /**
+   * A callback function called whenever accelerometer sensor data is received.
+   */
   onAccelerometerChanged(_id: string, _x: number, _y: number, _z: number) {
     throw new Error("Not yet implemented");
   }
 
+  /**
+   * A callback function called whenever UI event data is received.
+   */
   onUiEventReceived(
     _id: string,
     _uiId: string,
@@ -63,6 +80,9 @@ class ZapServer {
     throw new Error("Not yet implemented");
   }
 
+  /**
+   * A callback function called whenever text data is received.
+   */
   onTextReceived(_id: string, _str: string, _charset: Charset) {
     throw new Error("Not yet implemented");
   }

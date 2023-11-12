@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 
 import { Zapable, ZapDatagram, ZapHeader } from "./models";
 
+/**
+ * A client sends data to server.
+ */
 class ZapClient {
   id = uuidv4();
 
@@ -18,6 +21,11 @@ class ZapClient {
     });
   }
 
+  /**
+   * Send given Zapable object to the server.
+   *
+   * @param obj - An object to send.
+   */
   send(obj: Zapable) {
     const data = new ZapDatagram(
       new ZapHeader(this.id, obj.resource),
@@ -27,6 +35,9 @@ class ZapClient {
     this.socket.send(data, 0, data.length, this.PORT, this.serverAddress);
   }
 
+  /**
+   * Close the socket.
+   */
   stop() {
     this.socket.close();
   }

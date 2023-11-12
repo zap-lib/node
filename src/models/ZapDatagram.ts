@@ -9,6 +9,9 @@ export class ZapHeader {
     this.resource = resource;
   }
 
+  /**
+   * Convert `ZapHeader` to string and return it. It MUST be formatted as `id,resource`.
+   */
   toString(): string {
     return `${this.id},${this.resource}`;
   }
@@ -16,6 +19,10 @@ export class ZapHeader {
 
 export type ZapPayload = string;
 
+/**
+ * A protocol defined on top of datagrams for client and
+ * server to exchange `Zapable` data.
+ */
 export class ZapDatagram {
   header: ZapHeader;
   payload: ZapPayload;
@@ -25,10 +32,17 @@ export class ZapDatagram {
     this.payload = payload;
   }
 
+  /**
+   * Compose a string to send with the header and payload.
+   * The composed string MUST be formatted to `header;payload`.
+   */
   toString(): string {
     return `${this.header.toString()};${this.payload}`;
   }
 
+  /**
+   * Convert the given string in received datagram to `ZapDatagram`.
+   */
   static from(str: string): ZapDatagram {
     const [header, payload] = str.split(";");
     if (header == undefined) throw Error("Missing header");
