@@ -27,7 +27,7 @@ class ZapServer {
         }
         case ZapResource.UI_EVENT: {
           const { uiId, event, value } = ZapUiEvent.fromPayload(payload);
-          this.onUiComponentChanged(header.id, uiId, event, value);
+          this.onUiEventReceived(header.id, uiId, event, value);
           break;
         }
         case ZapResource.TEXT: {
@@ -54,7 +54,7 @@ class ZapServer {
     throw new Error("Not yet implemented");
   }
 
-  onUiComponentChanged(
+  onUiEventReceived(
     _id: string,
     _uiId: string,
     _event: ZapUiEventType,
