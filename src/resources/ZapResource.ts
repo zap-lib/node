@@ -1,6 +1,6 @@
 export enum ZapResource {
   ACCELEROMETER = "ACC",
-  UI_COMPONENT = "UIC",
+  UI_EVENT = "UIE",
   TEXT = "TXT",
 }
 
@@ -8,8 +8,8 @@ export function toZapResource(str: string): ZapResource {
   switch (str) {
     case ZapResource.ACCELEROMETER:
       return ZapResource.ACCELEROMETER;
-    case ZapResource.UI_COMPONENT:
-      return ZapResource.UI_COMPONENT;
+    case ZapResource.UI_EVENT:
+      return ZapResource.UI_EVENT;
     case ZapResource.TEXT:
       return ZapResource.TEXT;
     default:

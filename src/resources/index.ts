@@ -1,5 +1,5 @@
 export * from "./ZapResource";
 
 export * from "./ZapAccelerometer";
-export * from "./ZapUiComponent";
+export * from "./ZapUiEvent";
 export * from "./ZapText";

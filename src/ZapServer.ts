@@ -1,7 +1,7 @@
 import * as dgram from "node:dgram";
 
 import { Charset, ZapDatagram } from "./models";
-import { ZapAccelerometer, ZapUiComponent, ZapResource, ZapUiComponentEvent, ZapText } from "./resources";
+import { ZapAccelerometer, ZapUiEvent, ZapResource, ZapUiEventType, ZapText } from "./resources";
 
 class ZapServer {
   private DEFAULT_PORT = 65500;
@@ -25,9 +25,9 @@ class ZapServer {
           this.onAccelerometerChanged(header.id, x, y, z);
           break;
         }
-        case ZapResource.UI_COMPONENT: {
-          const { code, event, value } = ZapUiComponent.fromPayload(payload);
-          this.onUiComponentChanged(header.id, code, event, value);
+        case ZapResource.UI_EVENT: {
+          const { uiId, event, value } = ZapUiEvent.fromPayload(payload);
+          this.onUiComponentChanged(header.id, uiId, event, value);
           break;
         }
         case ZapResource.TEXT: {
@@ -56,8 +56,8 @@ class ZapServer {
 
   onUiComponentChanged(
     _id: string,
-    _code: string,
-    _event: ZapUiComponentEvent,
+    _uiId: string,
+    _event: ZapUiEventType,
     _value?: string,
   ) {
     throw new Error("Not yet implemented");
