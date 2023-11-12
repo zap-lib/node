@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Zapable, ZapDatagram, ZapHeader } from "./models";
 
 /**
- * A client sends data to server.
+ * A client that sends data to server.
  */
 class ZapClient {
   id = uuidv4();

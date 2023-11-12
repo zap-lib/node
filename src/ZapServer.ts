@@ -4,7 +4,7 @@ import { Charset, ZapDatagram } from "./models";
 import { ZapAccelerometer, ZapUiEvent, ZapResource, ZapUiEventType, ZapText } from "./resources";
 
 /**
- * A server receives data from client.
+ * A server that receives data from client.
  */
 class ZapServer {
   private DEFAULT_PORT = 65500;
