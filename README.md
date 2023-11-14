@@ -23,12 +23,12 @@ $ npm install zap-lib-js
 ```js
 import { ZapServer } from 'zap-lib-js';
 
-// Create and start a new zap server to listen for data from clients.
+// Create and start a new Zap server to listen for data from clients.
 (new class extends ZapServer {
   // Define the method that is called whenever accelerometer sensor data is
   // received from client devices.
-  onAccelerometerChanged(id: string, x: number, y: number, z: number) {
-    console.log(`Data received from ${id} (x: ${x}, y: ${y}, z: ${z})`);
+  onAccelerometerChanged(info: MetaInfo, data: ZapAccelerometer) {
+    console.log(`Data received from ${info.address}: (${data.x}, ${data.y}, ${data.z})`);
   }
 }).listen();
 ```
