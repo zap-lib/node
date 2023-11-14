@@ -1,6 +1,12 @@
-import { Charset, ZapPayload, Zapable, toCharset } from "../models";
+import { Charset, ZappPayload, Zapable, toCharset } from "../models";
 import { ZapResource } from ".";
 
+/**
+ * Represent simple text.
+ *
+ * @property str Just string.
+ * @property charset A character set of [str]. (default: UTF-8)
+ */
 export class ZapText implements Zapable {
   resource = ZapResource.TEXT;
 
@@ -12,12 +18,12 @@ export class ZapText implements Zapable {
     this.charset = charset;
   }
 
-  toPayload(): ZapPayload {
-    return `${encodeURIComponent(this.str)},${this.charset}`;
+  toPayload(): ZappPayload {
+    return Buffer.from(`${encodeURIComponent(this.str)},${this.charset}`);
   }
 
-  static fromPayload(payload: ZapPayload): ZapText {
-    const [str, charset] = payload.split(",");
+  static from(payload: ZappPayload): ZapText {
+    const [str, charset] = payload.toString().split(",");
     if (str == undefined || charset == undefined) {
       throw Error("Invalid payload");
     }

@@ -1,6 +1,13 @@
-import { ZapPayload, Zapable } from "../models";
+import { ZappPayload, Zapable } from "../models";
 import { ZapResource } from ".";
 
+/**
+ * Represent values measured by accelerometer sensor.
+ *
+ * @property x Acceleration force along the x axis. (m/s²)
+ * @property y Acceleration force along the y axis. (m/s²)
+ * @property z Acceleration force along the z axis. (m/s²)
+ */
 export class ZapAccelerometer implements Zapable {
   resource = ZapResource.ACCELEROMETER;
 
@@ -14,12 +21,12 @@ export class ZapAccelerometer implements Zapable {
     this.z = z;
   }
 
-  toPayload(): ZapPayload {
-    return `${this.x},${this.y},${this.z}`;
+  toPayload(): ZappPayload {
+    return Buffer.from(`${this.x},${this.y},${this.z}`);
   }
 
-  static fromPayload(payload: ZapPayload): ZapAccelerometer {
-    const [x, y, z] = payload.split(",").map((k) => Number(k));
+  static from(payload: ZappPayload): ZapAccelerometer {
+    const [x, y, z] = payload.toString().split(",").map((k) => Number(k));
     if (x == undefined || y == undefined || z == undefined) {
       throw Error("Invalid payload");
     }

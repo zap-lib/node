@@ -1,14 +1,13 @@
 import * as dgram from "node:dgram";
-import { v4 as uuidv4 } from "uuid";
 
-import { Zapable, ZapDatagram, ZapHeader } from "./models";
+import { Zapable, ZapDatagram, ZappHeader } from "./models";
 
 /**
- * A client sends data to server.
+ * A client that sends data to server.
+ *
+ * @property serverAddress An IP address of the device running ZapServer.
  */
-class ZapClient {
-  id = uuidv4();
-
+export class ZapClient {
   private serverAddress: string;
   private socket: dgram.Socket;
 
@@ -24,13 +23,13 @@ class ZapClient {
   /**
    * Send given Zapable object to the server.
    *
-   * @param obj - An object to send.
+   * @param obj An object to send.
    */
   send(obj: Zapable) {
     const data = new ZapDatagram(
-      new ZapHeader(this.id, obj.resource),
+      new ZappHeader(obj.resource),
       obj.toPayload(),
-    ).toString();
+    ).toBuffer();
 
     this.socket.send(data, 0, data.length, this.PORT, this.serverAddress);
   }
@@ -44,5 +43,3 @@ class ZapClient {
 
   private PORT = 65500;
 }
-
-export default ZapClient;

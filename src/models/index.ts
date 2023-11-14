@@ -1,3 +1,5 @@
 export * from "./Zapable";
-export * from "./ZapDatagram";
+export * from "./ZappObject";
+export * from "./ZappHeader";
+export * from "./ZappPayload";
 export * from "./Charset";

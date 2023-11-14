@@ -1,12 +1,23 @@
 import * as dgram from "node:dgram";
 
-import { Charset, ZapDatagram } from "./models";
-import { ZapAccelerometer, ZapUiEvent, ZapResource, ZapUiEventType, ZapText } from "./resources";
+import { ZapDatagram, ZappHeader } from "./models";
+import { ZapAccelerometer, ZapUiEvent, ZapResource, ZapText } from "./resources";
 
 /**
- * A server receives data from client.
+ * Meta information of received ZAPP Object.
+ *
+ * @property dgram Datagram information such as address and port.
+ * @property header ZAPP header object.
  */
-class ZapServer {
+export interface MetaInfo {
+  dgram: dgram.RemoteInfo,
+  header: ZappHeader,
+}
+
+/**
+ * A server that receives data from client.
+ */
+export class ZapServer {
   private DEFAULT_PORT = 65500;
 
   private port: number = this.DEFAULT_PORT;
@@ -20,22 +31,21 @@ class ZapServer {
       this.socket.close();
     });
 
-    this.socket.on("message", (msg) => {
-      const { header, payload } = ZapDatagram.from(msg.toString());
+    this.socket.on("message", (msg, rinfo) => {
+      const { header, payload } = ZapDatagram.from(msg);
+      const info = { dgram: rinfo, header };
+
       switch (header.resource) {
         case ZapResource.ACCELEROMETER: {
-          const { x, y, z } = ZapAccelerometer.fromPayload(payload);
-          this.onAccelerometerChanged(header.id, x, y, z);
+          this.onAccelerometerChanged(info, ZapAccelerometer.from(payload));
           break;
         }
         case ZapResource.UI_EVENT: {
-          const { uiId, event, value } = ZapUiEvent.fromPayload(payload);
-          this.onUiEventReceived(header.id, uiId, event, value);
+          this.onUiEventReceived(info, ZapUiEvent.from(payload));
           break;
         }
         case ZapResource.TEXT: {
-          const { str, charset } = ZapText.fromPayload(payload);
-          this.onTextReceived(header.id, str, charset);
+          this.onTextReceived(info, ZapText.from(payload));
           break;
         }
         default:
@@ -47,7 +57,7 @@ class ZapServer {
   /**
    * Start listening the transmitted data from clients on the given port.
    *
-   * @param port - A port number for receiving data (default: 65500).
+   * @param port A port number for receiving data (default: 65500).
    */
   listen(port: number = this.DEFAULT_PORT) {
     this.port = port;
@@ -64,28 +74,21 @@ class ZapServer {
   /**
    * A callback function called whenever accelerometer sensor data is received.
    */
-  onAccelerometerChanged(_id: string, _x: number, _y: number, _z: number) {
+  onAccelerometerChanged(_info: MetaInfo, _data: ZapAccelerometer) {
     throw new Error("Not yet implemented");
   }
 
   /**
    * A callback function called whenever UI event data is received.
    */
-  onUiEventReceived(
-    _id: string,
-    _uiId: string,
-    _event: ZapUiEventType,
-    _value?: string,
-  ) {
+  onUiEventReceived(_info: MetaInfo, _data: ZapUiEvent) {
     throw new Error("Not yet implemented");
   }
 
   /**
    * A callback function called whenever text data is received.
    */
-  onTextReceived(_id: string, _str: string, _charset: Charset) {
+  onTextReceived(_info: MetaInfo, _data: ZapText) {
     throw new Error("Not yet implemented");
   }
 }
-
-export default ZapServer;
