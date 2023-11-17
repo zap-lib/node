@@ -2,7 +2,7 @@ import { ZappPayload, Zapable, TypeSizeBytes } from "../models";
 import { ZapResource } from ".";
 
 /**
- * Represent values measured by accelerometer sensor.
+ * Represent the force of gravity that is applied to a device.
  *
  * ```text
  * +-------------+-------------+-------------+
@@ -10,12 +10,12 @@ import { ZapResource } from ".";
  * +-------------+-------------+-------------+
  * ```
  *
- * @property x Acceleration force along the x axis. (m/s²)
- * @property y Acceleration force along the y axis. (m/s²)
- * @property z Acceleration force along the z axis. (m/s²)
+ * @property x Force of gravity along the x axis. (m/s²)
+ * @property y Force of gravity along the y axis. (m/s²)
+ * @property z Force of gravity along the z axis. (m/s²)
  */
-export class ZapAccelerometer implements Zapable {
-  resource = ZapResource.ACCELEROMETER;
+export class ZapGravity implements Zapable {
+  resource = ZapResource.GRAVITY;
 
   x: number;
   y: number;
@@ -28,7 +28,7 @@ export class ZapAccelerometer implements Zapable {
   }
 
   toPayload(): ZappPayload {
-    const buf = Buffer.alloc(ZapAccelerometer.LENGTH);
+    const buf = Buffer.alloc(ZapGravity.LENGTH);
 
     buf.writeFloatBE(this.x);
     buf.writeFloatBE(this.y, TypeSizeBytes.FLOAT);
@@ -39,11 +39,11 @@ export class ZapAccelerometer implements Zapable {
 
   static LENGTH = TypeSizeBytes.FLOAT * 3;
 
-  static from(payload: ZappPayload): ZapAccelerometer {
+  static from(payload: ZappPayload): ZapGravity {
     const x = payload.readFloatBE();
     const y = payload.readFloatBE(TypeSizeBytes.FLOAT);
     const z = payload.readFloatBE(TypeSizeBytes.FLOAT * 2);
 
-    return new ZapAccelerometer(x, y, z);
+    return new ZapGravity(x, y, z);
   }
 }

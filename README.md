@@ -27,7 +27,7 @@ import { ZapServer } from 'zap-lib-js';
 (new class extends ZapServer {
   // Define the method that is called whenever accelerometer sensor data is
   // received from client devices.
-  onAccelerometerChanged(info: MetaInfo, data: ZapAccelerometer) {
+  onAccelerometerReceived(info: MetaInfo, data: ZapAccelerometer) {
     console.log(`Data received from ${info.dgram.address}: (${data.x}, ${data.y}, ${data.z})`);
   }
 }).listen();

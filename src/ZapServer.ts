@@ -1,7 +1,17 @@
 import * as dgram from "node:dgram";
 
 import { ZapDatagram, ZappHeader } from "./models";
-import { ZapAccelerometer, ZapUiEvent, ZapResource, ZapText } from "./resources";
+import {
+  ZapResource,
+  ZapAccelerometer,
+  ZapGeoPoint,
+  ZapGravity,
+  ZapGyroscope,
+  ZapIlluminance,
+  ZapMagneticField,
+  ZapText,
+  ZapUiEvent,
+} from "./resources";
 
 /**
  * Meta information of received ZAPP Object.
@@ -37,7 +47,27 @@ export class ZapServer {
 
       switch (header.resource) {
         case ZapResource.ACCELEROMETER: {
-          this.onAccelerometerChanged(info, ZapAccelerometer.from(payload));
+          this.onAccelerometerReceived(info, ZapAccelerometer.from(payload));
+          break;
+        }
+        case ZapResource.GEO_POINT: {
+          this.onGeoPointReceived(info, ZapGeoPoint.from(payload));
+          break;
+        }
+        case ZapResource.GRAVITY: {
+          this.onGravityReceived(info, ZapGravity.from(payload));
+          break;
+        }
+        case ZapResource.GYROSCOPE: {
+          this.onGyroscopeReceived(info, ZapGyroscope.from(payload));
+          break;
+        }
+        case ZapResource.ILLUMINANCE: {
+          this.onIlluminanceReceived(info, ZapIlluminance.from(payload));
+          break;
+        }
+        case ZapResource.MAGNETIC_FIELD: {
+          this.onMagneticFieldReceived(info, ZapMagneticField.from(payload));
           break;
         }
         case ZapResource.UI_EVENT: {
@@ -72,9 +102,44 @@ export class ZapServer {
   }
 
   /**
-   * A callback function called whenever accelerometer sensor data is received.
+   * A callback function called whenever accelerometer data is received.
    */
-  onAccelerometerChanged(_info: MetaInfo, _data: ZapAccelerometer) {
+  onAccelerometerReceived(_info: MetaInfo, _data: ZapAccelerometer) {
+    throw new Error("Not yet implemented");
+  }
+
+  /**
+   * A callback function called whenever geological point is received.
+   */
+  onGeoPointReceived(_info: MetaInfo, _data: ZapGeoPoint) {
+    throw new Error("Not yet implemented");
+  }
+
+  /**
+   * A callback function called whenever gravity data is received.
+   */
+  onGravityReceived(_info: MetaInfo, _data: ZapGravity) {
+    throw new Error("Not yet implemented");
+  }
+
+  /**
+   * A callback function called whenever gyroscope data is received.
+   */
+  onGyroscopeReceived(_info: MetaInfo, _data: ZapGyroscope) {
+    throw new Error("Not yet implemented");
+  }
+
+  /**
+   * A callback function called whenever illuminance data is received.
+   */
+  onIlluminanceReceived(_info: MetaInfo, _data: ZapIlluminance) {
+    throw new Error("Not yet implemented");
+  }
+
+  /**
+   * A callback function called whenever magnetic field data is received.
+   */
+  onMagneticFieldReceived(_info: MetaInfo, _data: ZapMagneticField) {
     throw new Error("Not yet implemented");
   }
 
