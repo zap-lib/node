@@ -182,3 +182,4 @@ src/
 .eslintrc
 tsconfig.json
 package-lock.json
+.github
