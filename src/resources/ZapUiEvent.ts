@@ -1,14 +1,20 @@
-import { ZapPayload, Zapable } from "../models";
+import { ZappPayload, Zapable } from "../models";
 import { ZapResource } from ".";
 
 export enum ZapUiEventType {
   CLICK_DOWN = "CLICK_DOWN",
-  CLICK_PRESS = "CLICK_PRESS",
   CLICK_UP = "CLICK_UP",
 }
 
 export type ZapUiEventTypeString = keyof typeof ZapUiEventType;
 
+/**
+ * Represent data related to event raised by the user interface.
+ *
+ * @property uiId An identifier for the UI.
+ * @property event A type of event occurring for the UI.
+ * @property value A value changed due to the event.
+ */
 export class ZapUiEvent implements Zapable {
   resource = ZapResource.UI_EVENT;
 
@@ -22,12 +28,12 @@ export class ZapUiEvent implements Zapable {
     this.value = value;
   }
 
-  toPayload(): ZapPayload {
-    return `${this.uiId},${this.event}${this.value ?? `,${this.value}`}`;
+  toPayload(): ZappPayload {
+    return Buffer.from(`${this.uiId},${this.event}${this.value ?? `,${this.value}`}`);
   }
 
-  static fromPayload(payload: ZapPayload): ZapUiEvent {
-    const [uiId, event, value] = payload.split(",");
+  static from(payload: ZappPayload): ZapUiEvent {
+    const [uiId, event, value] = payload.toString().split(",");
     if (uiId == undefined || event == undefined) {
       throw Error("Invalid payload");
     }

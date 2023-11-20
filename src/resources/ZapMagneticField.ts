@@ -2,7 +2,7 @@ import { ZappPayload, Zapable, TypeSizeBytes } from "../models";
 import { ZapResource } from ".";
 
 /**
- * Represent values measured by accelerometer sensor.
+ * Represent a ambient geomagnetic field.
  *
  * ```text
  * +-------------+-------------+-------------+
@@ -10,12 +10,12 @@ import { ZapResource } from ".";
  * +-------------+-------------+-------------+
  * ```
  *
- * @property x Acceleration force along the x axis. (m/s²)
- * @property y Acceleration force along the y axis. (m/s²)
- * @property z Acceleration force along the z axis. (m/s²)
+ * @property x Geomagnetic field strength along the x axis. (μT)
+ * @property y Geomagnetic field strength along the y axis. (μT)
+ * @property z Geomagnetic field strength along the z axis. (μT)
  */
-export class ZapAccelerometer implements Zapable {
-  resource = ZapResource.ACCELEROMETER;
+export class ZapMagneticField implements Zapable {
+  resource = ZapResource.MAGNETIC_FIELD;
 
   x: number;
   y: number;
@@ -28,7 +28,7 @@ export class ZapAccelerometer implements Zapable {
   }
 
   toPayload(): ZappPayload {
-    const buf = Buffer.alloc(ZapAccelerometer.LENGTH);
+    const buf = Buffer.alloc(ZapMagneticField.LENGTH);
 
     buf.writeFloatBE(this.x);
     buf.writeFloatBE(this.y, TypeSizeBytes.FLOAT);
@@ -39,11 +39,11 @@ export class ZapAccelerometer implements Zapable {
 
   static LENGTH = TypeSizeBytes.FLOAT * 3;
 
-  static from(payload: ZappPayload): ZapAccelerometer {
-    const x = payload.readFloatBE();
+  static from(payload: ZappPayload): ZapMagneticField {
+    const x = payload.readFloatBE(0);
     const y = payload.readFloatBE(TypeSizeBytes.FLOAT);
     const z = payload.readFloatBE(TypeSizeBytes.FLOAT * 2);
 
-    return new ZapAccelerometer(x, y, z);
+    return new ZapMagneticField(x, y, z);
   }
 }
