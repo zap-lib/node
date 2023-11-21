@@ -2,6 +2,7 @@ import { ZappPayload, Zapable } from "../models";
 import { ZapResource } from ".";
 
 export enum ZapUiEventType {
+  CLICK = "CLICK",
   CLICK_DOWN = "CLICK_DOWN",
   CLICK_UP = "CLICK_UP",
 }
